@@ -1,0 +1,11 @@
+[package]
+name = "lyricsync"
+version = "3.0.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Continuous Spotify lyrics for Linux terminals"
+license = "MIT"
+
+[profile.release]
+lto = "thin"
+strip = true

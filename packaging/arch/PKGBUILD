@@ -1,0 +1,29 @@
+pkgname=lyricsync
+pkgver=3.0.0
+pkgrel=1
+pkgdesc='Continuous Spotify-synchronized lyrics for the Linux terminal'
+arch=('x86_64')
+license=('MIT')
+depends=('cairo' 'coreutils' 'curl' 'glibc' 'libfyaml' 'libgcc' 'libunistring' 'pango' 'playerctl')
+makedepends=('rust')
+options=('!debug')
+source=("$pkgname-$pkgver.tar.zst")
+sha256sums=('180afaa02dd585a059ee358d72ad1ead714b81bce85cc31b8a8ed47fe1924bc4')
+
+build() {
+    cd "$pkgname-$pkgver"
+    cargo build --release --frozen
+}
+
+check() {
+    cd "$pkgname-$pkgver"
+    cargo test --frozen
+}
+
+package() {
+    cd "$pkgname-$pkgver"
+    install -Dm755 target/release/lyricsync "$pkgdir/usr/bin/lyricsync"
+    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+    install -Dm644 examples/demo.lrc "$pkgdir/usr/share/doc/$pkgname/examples/demo.lrc"
+}
